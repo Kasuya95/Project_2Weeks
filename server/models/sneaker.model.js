@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./db.js");
-const Restaurant = sequelize.define("product", {
+const Restaurant = sequelize.define("sneakers", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -10,7 +10,7 @@ const Restaurant = sequelize.define("product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  type: {
+  brand: {
     type: DataTypes.STRING,
     allowNull: false,
   },
