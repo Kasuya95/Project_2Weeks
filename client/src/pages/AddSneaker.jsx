@@ -25,10 +25,10 @@ const AddSneaker = () => {
     }
 
     try {
-      const response = await SneakerService.addRestaurants(Sneaker);
+      const response = await SneakerService.addSneaker(Sneaker);
       if (response.status === 200 || response.status === 201) {
         Swal.fire("สำเร็จ!", "เพิ่มร้านอาหารเรียบร้อยแล้ว", "success");
-        setRestaurant({
+        setSneaker({
           name: "",
           type: "",
           imageUrl: "",
@@ -50,7 +50,7 @@ const AddSneaker = () => {
           className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4"
         >
           <legend className="fieldset-legend flex justify-between items-center">
-            Add Restaurant
+            Add Sneaker
             <a className="btn btn-active btn-error size-5" href="/">
               X
             </a>
@@ -58,7 +58,7 @@ const AddSneaker = () => {
 
           <label className="label">Name</label>
           <input
-            value={Restaurant.name}
+            value={Sneaker.name}
             onChange={handleChange}
             type="text"
             className="input"
@@ -68,7 +68,7 @@ const AddSneaker = () => {
 
           <label className="label">Type</label>
           <input
-            value={Restaurant.type}
+            value={Sneaker.type}
             onChange={handleChange}
             type="text"
             className="input"
@@ -78,7 +78,7 @@ const AddSneaker = () => {
 
           <label className="label">Image URL</label>
           <input
-            value={Restaurant.imageUrl}
+            value={Sneaker.imageUrl}
             onChange={handleChange}
             type="text"
             className="input"
@@ -86,17 +86,20 @@ const AddSneaker = () => {
             name="imageUrl"
           />
 
-          {Restaurant.imageUrl && (
+          {Sneaker.imageUrl && (
             <div className="flex items-center gap-2 px-8 mt-2">
               <img
                 className="h-32 rounded-md shadow-md"
-                src={Restaurant.imageUrl}
+                src={Sneaker.imageUrl}
                 alt="preview"
               />
             </div>
           )}
 
-          <button type="submit" className="btn btn-soft btn-primary mt-4 w-full">
+          <button
+            type="submit"
+            className="btn btn-soft btn-primary mt-4 w-full"
+          >
             Add
           </button>
         </form>
@@ -105,4 +108,4 @@ const AddSneaker = () => {
   );
 };
 
-export default AddRestaurant;
+export default AddSneaker;
