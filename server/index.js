@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
   res.send("Hello");
 });
 
-app.use("/api/v1", sneakerRouter);
+app.use("/api/v1/sneaker", sneakerRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening to http://localhost:${PORT}`);
