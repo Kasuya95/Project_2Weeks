@@ -17,6 +17,22 @@ app.use(
   })
 );
 
+const authRouter = require("./routers/auth.router");
+
+const db = require("./models/index");
+const role = db.Role;
+
+const initRole = () => {
+  role.create({ id: 1, name: "user" });
+  role.create({ id: 2, name: "moderator" });
+  role.create({ id: 3, name: "admin" });
+};
+
+// db.sequelize.sync({ force: true }).then(() => {
+//   initRole();
+//   console.log("Drop and Sync");
+// });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,6 +41,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/sneaker", sneakerRouter);
+app.use("/api/v1/auth", authRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Listening to http://localhost:${PORT}`);
