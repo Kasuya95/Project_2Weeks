@@ -1,56 +1,63 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Sneaker from "../components/Sneaker";
-import swal from "sweetalert2"
+import swal from "sweetalert2";
 import SneakerService from "../services/sneaker.service";
+
 const Home = () => {
-  const [Sneakers, setSneakers] = useState([]);
-  const [filteredSneaker, setFiltedSneaker] = useState([]);
+  const [sneakers, setSneakers] = useState([]);
+  const [filteredSneakers, setFilteredSneakers] = useState([]);
+  console.log(Sneaker);
   
+
   useEffect(() => {
-    //call api getAllSneaker
-    const getAllSneaker = async () => {
+    // Call API getAllSneakers
+    const getAllSneakers = async () => {
       try {
         const response = await SneakerService.getAllSneakers();
 
         if (response.status === 200) {
           setSneakers(response.data);
-          setFiltedSneaker(response.data);
+          setFilteredSneakers(response.data);
         }
       } catch (error) {
-        // catch error
         swal.fire({
           title: "Get all Sneaker",
           text: error?.response?.data?.message || error.message,
         });
       }
     };
-    getAllSneaker();
+
+    getAllSneakers();
   }, []);
 
   const handleSearch = (keyword) => {
-    if (keyword === "") {
+    if (!keyword) {
+      setFilteredSneakers(sneakers);
       return;
     }
-    const Results = Sneakers.filter((Sneaker) => {
+
+    const results = sneakers.filter((s) => {
       return (
-        Sneaker.name.toLowerCase().includes(keyword.toLocaleLowerCase()) ||
-        Sneaker.type.toLowerCase().includes(keyword.toLocaleLowerCase())
+        s.name.toLowerCase().includes(keyword.toLowerCase()) ||
+        s.type.toLowerCase().includes(keyword.toLowerCase())
       );
     });
 
-    setFiltedSneaker(Results);
+    setFilteredSneakers(results);
   };
+
   return (
     <div className="container mx-auto">
-      {/*header*/}
+      {/* Header */}
       <div>
         <h1 className="title justify-center text-3xl text-center m-5 p-6">
           Grab Sneaker
         </h1>
       </div>
-      {/*SearchBox*/}
-      <div className="mb-5 flex justify-center items-center ">
+
+      {/* SearchBox */}
+      <div className="mb-5 flex justify-center items-center">
         <label className="input flex items-center gap-2 w-3xl">
           <svg
             className="h-[1em] opacity-50"
@@ -77,8 +84,9 @@ const Home = () => {
           />
         </label>
       </div>
-      {/*Results*/}
-      <Sneaker Sneaker={filteredSneaker} />
+
+      {/* Results */}
+      <Sneaker sneakers={filteredSneakers} />
     </div>
   );
 };

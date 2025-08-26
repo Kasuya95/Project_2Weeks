@@ -1,11 +1,9 @@
-import React from 'react'
-import  Card  from './Card'
+import React from "react";
+import Card from "./Card";
 import { useAuthContext } from "../context/AuthContext";
 
-
-const Sneaker = (Sneakers) => {
-
-    if (!Array.isArray(Sneaker)) {
+const Sneaker = ({ sneakers }) => {
+  if (!Array.isArray(sneakers) || sneakers.length === 0) {
     return (
       <div className="text-center text-red-500 mt-10">
         <p>No Sneaker available.</p>
@@ -16,17 +14,18 @@ const Sneaker = (Sneakers) => {
   return (
     <div className="flex">
       <div className="flex flex-wrap justify-center gap-4">
-        {Sneakers.map((Sneaker) => (
+        {sneakers.map((s) => (
           <Card
-            key={Sneaker.id}
-            id={Sneaker.id}
-            name={Sneaker.name}
-            type={Sneaker.type}
-            imageUrl={Sneaker.imageUrl}
+            key={s.id}
+            id={s.id}
+            name={s.name}
+            type={s.type}
+            imageUrl={s.imageUrl}
           />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
+
 export default Sneaker;
