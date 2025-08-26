@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./db.js");
-const Restaurant = sequelize.define("sneakers", {
+const Sneakers = sequelize.define("sneakers", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -20,7 +20,7 @@ const Restaurant = sequelize.define("sneakers", {
   },
 });
 
-Restaurant.sync({ force: false })
+Sneakers.sync({ force: false })
   .then(() => {
     console.log("Table created or already existed");
   })
@@ -28,4 +28,4 @@ Restaurant.sync({ force: false })
     console.log("Error creating table", error);
   });
 
-module.exports = Restaurant;
+module.exports = Sneakers;
