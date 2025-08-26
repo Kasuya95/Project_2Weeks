@@ -1,14 +1,20 @@
+import React, { useState, useEffect, use } from "react";
+import Navbar from "../components/Navbar";
+import Sneaker from "../components/Sneaker";
+import swal from "sweetalert2"
+import SneakerService from "../services/sneaker.service";
 const Home = () => {
-  const [Sneaker, setSneaker] = useState([]);
+  const [Sneakers, setSneakers] = useState([]);
   const [filteredSneaker, setFiltedSneaker] = useState([]);
+  
   useEffect(() => {
     //call api getAllSneaker
     const getAllSneaker = async () => {
       try {
-        const response = await SneakerService.getAllSneaker();
+        const response = await SneakerService.getAllSneakers();
 
         if (response.status === 200) {
-          setSneaker(response.data);
+          setSneakers(response.data);
           setFiltedSneaker(response.data);
         }
       } catch (error) {
@@ -26,7 +32,7 @@ const Home = () => {
     if (keyword === "") {
       return;
     }
-    const Results = Sneaker.filter((Sneaker) => {
+    const Results = Sneakers.filter((Sneaker) => {
       return (
         Sneaker.name.toLowerCase().includes(keyword.toLocaleLowerCase()) ||
         Sneaker.type.toLowerCase().includes(keyword.toLocaleLowerCase())

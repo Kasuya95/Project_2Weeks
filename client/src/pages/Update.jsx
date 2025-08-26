@@ -5,12 +5,44 @@ import SneakerService from "../services/sneaker.service";
 import { useNavigate } from "react-router";
 
 const Update = () => {
-  //1.Get id from URL
-  const { id } = useParams();
-  const [Sneaker, setSneaker] = useState({
-    name: "",
-    type: "",
-    imageUrl: "",
+    //1.Get id from URL
+    const { id } = useParams();
+    const [Sneaker, setSneaker] = useState({
+      name: "",
+      type: "",
+      imageUrl: "",
+    });
+  const navigate = useNavigate()
+    //2.Get Sneaker By ID
+    useEffect(()=>{
+        fetch(`http://localhost:3000/api/v1/sneaker/${id}`).then((res) => {
+          //แปลงจาก JSON เป็น String
+            return res.json();
+        })
+        .then((response) => {
+            setSneaker(response)
+        })
+        .catch((err)=>{
+            console.log(err.message)
+        })
+    }, [id]);
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setSneaker({ ...Sneaker, [name]: value }) //clone 
+    };
+    const handleSubmit = async () => {
+  if (!id) {
+    Swal.fire('Error', 'Sneaker ID is missing!', 'error');
+    return;
+  }
+
+  const result = await Swal.fire({
+    title: 'คุณแน่ใจหรือไม่?',
+    text: 'คุณต้องการอัปเดตร้านอาหารนี้ใช่ไหม?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'ใช่, อัปเดตเลย!',
+    cancelButtonText: 'ยกเลิก',
   });
   const navigate = useNavigate();
   //2.Get Sneaker By ID
@@ -114,5 +146,6 @@ const Update = () => {
     </div>
   );
 };
+}
 
 export default Update;

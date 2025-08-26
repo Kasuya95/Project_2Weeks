@@ -25,7 +25,7 @@ const AddSneaker = () => {
     }
 
     try {
-      const response = await SneakerService.addSneaker(Sneaker);
+      const response = await SneakerService.addSneakers(Sneaker);
       if (response.status === 200 || response.status === 201) {
         Swal.fire("สำเร็จ!", "เพิ่มร้านอาหารเรียบร้อยแล้ว", "success");
         setSneaker({

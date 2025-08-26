@@ -1,27 +1,84 @@
-import React from 'react'
-import swal from 'sweetalert2'
+import React from 'react';
+import Swal from 'sweetalert2';
+import { useAuthContext } from '../context/AuthContext';
+import SneakertService from '../services/sneaker.service';
 
-export const Card = (props) => {
+const Card = (props) => {
+  const { user } = useAuthContext();
+  //console.log(user.authorities)
 
-    const deleted = async (id) => {
-        
+const deleted = async (id) => {
+  try {
+    const response = await SneakertService.deleteSneakers(id);
+
+    // Axios: status 200 หมายถึงสำเร็จ
+    if (response.status === 200) {
+      Swal.fire('ลบสำเร็จ!', response.data.message || 'ร้านอาหารถูกลบเรียบร้อยแล้ว', 'success');
+      window.location.reload(); // ถ้าต้องการ reload หน้า
+    } else {
+      Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบได้', 'error');
     }
+  } catch (err) {
+    console.error(err);
+    Swal.fire('ล้มเหลว', 'เกิดข้อผิดพลาดบางอย่าง', 'error');
+  }
+};
+
+
+const confirmDelete = (id) => {
+  Swal.fire({
+    title: 'แน่ใจ?',
+    text: 'ต้องการลบร้านอาหารนี้ใช่หรือไม่',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'ตกลง',
+    cancelButtonText: 'ยกเลิก'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleted(id);
+    }
+  });
+};
+
+
   return (
     <div className="card bg-base-100 w-96 shadow-sm">
-  <figure>
-    <img
-      src={props.imageUrl}
-      alt="Shoes" />
-  </figure>
-  <div className="card-body">
-    <h2 className="card-title">
-      {props.name}
-      <div className="badge badge-secondary">NEW</div>
-    </h2>
-    <div className="card-actions justify-end">
-      <div className="badge badge-outline">{props.brand}</div>
+      <figure>
+        <img src={props.imageUrl} alt="Sneaker" />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">
+          {props.name}
+          <div className="badge badge-secondary">NEW</div>
+        </h2>
+        <p>{props.type}</p>
+        <div className="card-actions justify-end">
+          {
+            user && user.authorities.includes("ROLES_ADMIN") && (
+              <>
+                <div
+                  onClick={() => confirmDelete(props.id)}
+                  className="btn btn-dash btn-error"
+                >
+                  Delete
+                </div>
+                <a href={`/Update/${props.id}`} className="btn btn-dash btn-primary">
+                  Update
+                </a>
+              </>
+            )
+          }
+
+          {
+            user && user.authorities.includes("ROLES_MODERATOR") &&
+            <a href={`/Update/${props.id}`} className="btn btn-dash btn-primary">             Update           </a>
+          }
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-  )
-}
+  );
+};
+
+export default Card;

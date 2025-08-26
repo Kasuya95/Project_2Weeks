@@ -1,7 +1,10 @@
 import React from 'react'
 import  Card  from './Card'
+import { useAuthContext } from "../context/AuthContext";
 
-export const Sneaker = (Sneakers) => {
+
+const Sneaker = (Sneakers) => {
+
     if (!Array.isArray(Sneaker)) {
     return (
       <div className="text-center text-red-500 mt-10">
@@ -26,3 +29,4 @@ export const Sneaker = (Sneakers) => {
     </div>
   )
 }
+export default Sneaker;
